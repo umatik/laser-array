@@ -1,11 +1,25 @@
 # laser-array
 
-Sterowanie macierzą laserów (on/off) z Resolume Arena przez Art-Net.
+Control an array of lasers (on/off) from Resolume Arena over Art-Net.
 
-Raspberry Pi 5 odbiera Art-Net, mapuje kanały DMX na tablicę stanów wyjść i wysyła ją przez SPI do łańcucha 74HC595 → ULN2803A → lasery.
-Liczba wyjść jest konfigurowalna (8 na start, docelowo 16/32/64/…/256+).
+A Raspberry Pi 5 receives Art-Net, maps DMX channels to an array of output states,
+and sends this array over SPI to a chain of 74HC595 shift registers.
+The 74HC595 outputs drive ULN2803A chips, and these switch the lasers.
 
-## Etapy
-1. [Podstawy: Pi + 1× 74HC595 + ULN2803A](docs/etap1.md) – podłączenie i test wyjść (`tools/test_outputs.py`)
-2. Odbiór Art-Net z Resolume (w przygotowaniu)
-# laser-array
+The number of outputs is configurable: 8 for the first prototype, later 16, 32, 64 ... 256 or more.
+To add 8 more outputs, you add one more 74HC595 + ULN2803A and change one setting.
+
+## Signal path
+
+```
+Resolume Arena -> Art-Net (Ethernet) -> Raspberry Pi 5 -> SPI -> 74HC595 chain -> ULN2803A -> lasers
+```
+
+## Stages
+
+1. [Basics: Pi + 1x 74HC595 + ULN2803A](docs/etap1.md) - wiring and output test (`tools/test_outputs.py`)
+2. Receive Art-Net from Resolume (in progress)
+
+## Safety
+
+Do the first tests with LEDs, not lasers. Never look into a laser beam.
